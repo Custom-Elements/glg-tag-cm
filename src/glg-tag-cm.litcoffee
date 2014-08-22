@@ -35,10 +35,16 @@ and gives a list of pick values.
 This hooks up tag changes to save.
 
       addtag: (evt, detail) ->
-        console.log 'add', detail
+        console.log 'add', detail, @$.user.currentuser
+        @$.addtag.withCredentials="true"
+        @$.addtag.url="http://epiquery.glgroup.com/tags/addTag.mustache?type=council_member&typeId=#{@cmid}&tag=#{encodeURIComponent(detail.tag)}&createdBy=#{@$.user.currentuser.personId}"
+        @$.addtag.go()
 
       removetag: (evt, detail) ->
         console.log 'remove', detail
+        @$.removetag.withCredentials="true"
+        @$.removetag.url="http://epiquery.glgroup.com/tags/deleteTag.mustache?type=council_member&typeId=#{@cmid}&tag=#{encodeURIComponent(detail.tag)}"
+        @$.removetag.go()
 
 ##Polymer Lifecycle
 

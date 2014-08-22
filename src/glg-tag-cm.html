@@ -7,8 +7,11 @@
 <polymer-element name="glg-tag-cm" attributes="cmid tags tagoptions alltags">
 <template>
   <link rel="stylesheet" type="text/css" href="./glg-tag-cm.less">
-  <core-ajax id="cmtags" response="{{tags}}" handleAs="json">
-  <core-ajax id="alltags" response="{{alltags}}" handleAs="json">
+  <glg-current-user id="user"></glg-current-user>
+  <core-ajax id="cmtags" response="{{tags}}" handleAs="json"></core-ajax>
+  <core-ajax id="alltags" response="{{alltags}}" handleAs="json"></core-ajax>
+  <core-ajax id="addtag"></core-ajax>
+  <core-ajax id="removetag"></core-ajax>
   <ui-typeahead id="tags" placeholder="Add some tags!" value="{{tags}}" multiselect
     on-itemadded="{{addtag}}"
     on-itemremoved="{{removetag}}"
