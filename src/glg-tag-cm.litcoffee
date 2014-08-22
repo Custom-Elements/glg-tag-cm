@@ -11,12 +11,19 @@ and data connection to epiquery is all inside here, just set the cmid.
 ##Attributes and Change Handlers
 
       cmidChanged: ->
-        @$.cmtags.withCredentials="true"
-        @$.cmtags.url="http://epiquery.glgroup.com/tags/getTags.mustache?type=council_member&typeId=#{@cmid}"
+        debugger
+        @$.cmtags.withCredentials = true
+        @$.cmtags.url = "#{@src}/tags/getTags.mustache"
+        @$.cmtags.params = 
+          type: "council_member"
+          typeId: @cmid
         @$.cmtags.go()
-        @$.alltags.withCredentials="true"
-        @$.alltags.url="http://epiquery.glgroup.com/tags/list.mustache?type=council_member"
-        @$.alltags.go()
+
+        @$.alltags.withCredentials = true
+        @$.alltags.url = "#{@src}/tags/list.mustache"
+        @$.alltags.params = 
+          type: "council_member"
+        @$.alltags.go()      
 
 ##Methods
 
@@ -27,7 +34,9 @@ and gives a list of pick values.
 
       filterAvailableTags: (evt) ->
         matches = @alltags.filter (option) ->
-          option?.tag?.toLowerCase().indexOf(evt.detail?.value?.toLowerCase()) > -1
+          query = evt.detail?.value?.toLowerCase()
+          optionText = option?.tag?.toLowerCase()
+          optionText.indexOf(query) > -1
         matches.unshift tag: evt.detail.value
         @tagoptions = matches
 
@@ -36,14 +45,23 @@ This hooks up tag changes to save.
 
       addtag: (evt, detail) ->
         console.log 'add', detail, @$.user.currentuser
-        @$.addtag.withCredentials="true"
-        @$.addtag.url="http://epiquery.glgroup.com/tags/addTag.mustache?type=council_member&typeId=#{@cmid}&tag=#{encodeURIComponent(detail.tag)}&createdBy=#{@$.user.currentuser.personId}"
+        @$.addtag.withCredentials = true
+        @$.addtag.url = "#{@src}/tags/addTag.mustache"
+        @$.addtag.params =
+          type: "council_member"
+          typeId: @cmid
+          tag: encodeURIComponent(detail.tag)
+          createdBy: @$.user.currentuser.personId
         @$.addtag.go()
 
       removetag: (evt, detail) ->
         console.log 'remove', detail
-        @$.removetag.withCredentials="true"
-        @$.removetag.url="http://epiquery.glgroup.com/tags/deleteTag.mustache?type=council_member&typeId=#{@cmid}&tag=#{encodeURIComponent(detail.tag)}"
+        @$.removetag.withCredentials = true
+        @$.removetag.url = "#{@src}/tags/deleteTag.mustache"
+        @$.removetag.params =
+          type: "council_member"
+          typeId: @cmid
+          tag: encodeURIComponent(detail.tag)
         @$.removetag.go()
 
 ##Polymer Lifecycle
@@ -54,6 +72,6 @@ This hooks up tag changes to save.
 
       attached: ->
 
-      domReady: ->
+      domReady: ->        
 
       detached: ->
