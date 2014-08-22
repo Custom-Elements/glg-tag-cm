@@ -9,7 +9,10 @@
   <link rel="stylesheet" type="text/css" href="./glg-tag-cm.less">
   <core-ajax id="cmtags" response="{{tags}}" handleAs="json">
   <core-ajax id="alltags" response="{{alltags}}" handleAs="json">
-  <ui-typeahead id="tags" placeholder="Add some tags!" value="{{tags}}" multiselect on-inputchange="{{filterAvailableTags}}">
+  <ui-typeahead id="tags" placeholder="Add some tags!" value="{{tags}}" multiselect
+    on-itemadded="{{addtag}}"
+    on-itemremoved="{{removetag}}"
+    on-inputchange="{{filterAvailableTags}}">
     <icon tag></icon>
     <template value>
       <value><ui-pill>{{ tag }}</ui-pill></value>

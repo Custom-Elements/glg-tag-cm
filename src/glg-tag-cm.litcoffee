@@ -27,9 +27,18 @@ and gives a list of pick values.
 
       filterAvailableTags: (evt) ->
         matches = @alltags.filter (option) ->
-          option.tag.toLowerCase().indexOf(evt.detail.value.toLowerCase()) > -1
+          option?.tag?.toLowerCase().indexOf(evt.detail?.value?.toLowerCase()) > -1
         matches.unshift tag: evt.detail.value
         @tagoptions = matches
+
+###[add|remove]tag
+This hooks up tag changes to save.
+
+      addtag: (evt, detail) ->
+        console.log 'add', detail
+
+      removetag: (evt, detail) ->
+        console.log 'remove', detail
 
 ##Polymer Lifecycle
 
