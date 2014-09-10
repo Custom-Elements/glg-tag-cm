@@ -10,8 +10,7 @@ and data connection to epiquery is all inside here, just set the cmid.
 
 ##Attributes and Change Handlers
 
-      cmidChanged: ->
-        debugger
+      cmidChanged: ->        
         @$.cmtags.withCredentials = true
         @$.cmtags.url = "#{@src}/tags/getTags.mustache"
         @$.cmtags.params = 
@@ -45,23 +44,25 @@ This hooks up tag changes to save.
 
       addtag: (evt, detail) ->
         console.log 'add', detail, @$.user.currentuser
+        @$.addtag.method = "POST"
         @$.addtag.withCredentials = true
         @$.addtag.url = "#{@src}/tags/addTag.mustache"
         @$.addtag.params =
           type: "council_member"
           typeId: @cmid
-          tag: encodeURIComponent(detail.tag)
+          tag: detail.tag
           createdBy: @$.user.currentuser.personId
         @$.addtag.go()
 
       removetag: (evt, detail) ->
         console.log 'remove', detail
+        @$.removetag.method = "POST"
         @$.removetag.withCredentials = true
         @$.removetag.url = "#{@src}/tags/deleteTag.mustache"
         @$.removetag.params =
           type: "council_member"
           typeId: @cmid
-          tag: encodeURIComponent(detail.tag)
+          tag: detail.tag
         @$.removetag.go()
 
 ##Polymer Lifecycle
