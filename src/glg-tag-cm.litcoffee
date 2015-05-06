@@ -10,21 +10,23 @@ and data connection to epiquery is all inside here, just set the cmid.
 
 ##Attributes and Change Handlers
 
-      cmidChanged: ->        
+      cmidChanged: ->
         @$.cmtags.withCredentials = true
         @$.cmtags.url = "#{@src}/tags/getTags.mustache"
-        @$.cmtags.params = 
+        @$.cmtags.params =
           type: "council_member"
           typeId: @cmid
         @$.cmtags.go()
 
-        @$.alltags.withCredentials = true
-        @$.alltags.url = "#{@src}/tags/list.mustache"
-        @$.alltags.params = 
-          type: "council_member"
-        @$.alltags.go()      
 
 ##Methods
+
+      loadAutocompleteTags: ->
+        @$.alltags.withCredentials = true
+        @$.alltags.url = "#{@src}/tags/list.mustache"
+        @$.alltags.params =
+          type: "council_member"
+        @$.alltags.go()
 
 ##Event Handlers
 ###filterAvailableTags
@@ -32,6 +34,8 @@ This takes all the existing tag options, as well as what you just typed
 and gives a list of pick values.
 
       filterAvailableTags: (evt) ->
+        if not @alltags
+         do @loadAutocompleteTags
         matches = @alltags.filter (option) ->
           query = evt.detail?.value?.toLowerCase()
           optionText = option?.tag?.toLowerCase()
@@ -73,6 +77,6 @@ This hooks up tag changes to save.
 
       attached: ->
 
-      domReady: ->        
+      domReady: ->
 
       detached: ->
