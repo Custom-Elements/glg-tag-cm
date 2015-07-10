@@ -6,7 +6,6 @@ and data connection to epiquery is all inside here, just set the cmid.
     Polymer 'glg-tag-cm',
 
 ##Events
-*TODO* describe the custom event `name` and `detail` that are fired.
 
 ##Attributes and Change Handlers
 
@@ -18,6 +17,14 @@ and data connection to epiquery is all inside here, just set the cmid.
           typeId: @cmid
         @$.cmtags.go()
 
+      leadidChanged: ->
+        @$.cmtags.withCredentials = true
+        @$.cmtags.url = "#{@src}/tags/getTags.mustache"
+        @$.cmtags.params =
+          type: "council_lead"
+          typeId: @leadid
+        @$.cmtags.go()
+
 
 ##Methods
 
@@ -25,7 +32,7 @@ and data connection to epiquery is all inside here, just set the cmid.
         @$.alltags.withCredentials = true
         @$.alltags.url = "#{@src}/tags/list.mustache"
         @$.alltags.params =
-          type: "council_member"
+          type: if @cmid then "council_member" else "council_lead"
         @$.alltags.go()
 
 ##Event Handlers
@@ -52,8 +59,8 @@ This hooks up tag changes to save.
         @$.addtag.withCredentials = true
         @$.addtag.url = "#{@src}/tags/addTag.mustache"
         @$.addtag.params =
-          type: "council_member"
-          typeId: @cmid
+          type: if @cmid then "council_member" else "council_lead"
+          typeId: @cmid or @leadid
           tag: detail.tag
           createdBy: @$.user.currentuser.personId
         @$.addtag.go()
@@ -64,8 +71,8 @@ This hooks up tag changes to save.
         @$.removetag.withCredentials = true
         @$.removetag.url = "#{@src}/tags/deleteTag.mustache"
         @$.removetag.params =
-          type: "council_member"
-          typeId: @cmid
+          type: if @cmid then "council_member" else "council_lead"
+          typeId: @cmid or @leadid
           tag: detail.tag
         @$.removetag.go()
 
