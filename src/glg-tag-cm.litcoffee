@@ -35,6 +35,13 @@ and data connection to epiquery is all inside here, just set the cmid.
           type: if @cmid then "council_member" else "council_lead"
         @$.alltags.go()
 
+      handleCmTags: (tags)->
+        @tags = []
+        tags.detail.response.forEach (t) =>
+          if (t.tag.indexOf('SP-') is 0) or (t.tag.indexOf('industry1|') is 0) or (t.tag.indexOf('industry2|') is 0) or (t.tag.indexOf('function1|') is 0) or (t.tag.indexOf('function2|') is 0)
+            t.readonly = true
+          @tags.push t
+
 ##Event Handlers
 ###filterAvailableTags
 This takes all the existing tag options, as well as what you just typed
